@@ -2,8 +2,8 @@
 
 import Sequelize = require('sequelize');
 
-export = function clienteSequalize(sequelizeInstance): Sequelize.Model<models.Cliente, models.ClienteAtributos> {
-    let atributos = {
+export = function clienteSequalize(sequelizeInstance): Sequelize.Model<models.Cliente, models.ClienteAttributes> {
+    let attributes = {
         _id: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -14,15 +14,15 @@ export = function clienteSequalize(sequelizeInstance): Sequelize.Model<models.Cl
         apellido: Sequelize.STRING
     };
 
-    let clienteMetodos: models.ClienteMetodos = {
+    let clienteMethods: models.ClienteMethods = {
         nombreCompleto: () => {
             return this.nombre + ', ' + this.apellido;
         }
     };
 
-    let opciones = {
-        instanceMethods: clienteMetodos
+    let options = {
+        instanceMethods: clienteMethods
     };
 
-    return sequelizeInstance.define('Cliente', atributos, opciones);
+    return sequelizeInstance.define('Cliente', attributes, options);
 }

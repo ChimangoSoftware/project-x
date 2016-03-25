@@ -2,7 +2,7 @@ import Sequelize = require('sequelize');
 import clienteSequalize = require('./model.seq');
 
 class ClienteDao implements service.ClienteService {
-    model: Sequelize.Model<models.Cliente, models.ClienteAtributos>;
+    model: Sequelize.Model<models.Cliente, models.ClienteAttributes>;
 
     constructor(sequelizeInstance) {
         this.model = clienteSequalize(sequelizeInstance);
