@@ -21,7 +21,6 @@ module.exports = function(app, seneca) {
         });
     });
 
-    // app.use('/api/service', router);
     // app.use('/auth', require('./auth'));
 
     // All other routes should redirect to the index.html
