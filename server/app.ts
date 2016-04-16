@@ -15,9 +15,8 @@ import sequelizeInstance = require('./config/sequelize-config');
 
 // server
 var app = express();
-var server = http.createServer(app);
-
 app.use(bodyParser.json());
+var server = http.createServer(app);
 
 // socketio
 /*

@@ -4,10 +4,10 @@ var path = require('path');
 var _ = require('lodash');
 
 function requiredProcessEnv(name) {
-    if (!process.env[name]) {
-        throw new Error('You must set the ' + name + ' environment variable');
+    if (!name) {
+        throw new Error('You must set the NODE_ENV environment variable');
     }
-    return process.env[name];
+    return process.env.NODE_ENV;
 }
 
 // All configurations will extend these options
@@ -38,4 +38,5 @@ var all = {
 export = _.merge(
     all,
     require('./shared'),
-    require('./' + process.env.NODE_ENV + '.js') || {});
+    require('./' + requiredProcessEnv(process.env.NODE_ENV) + '.js') || {}
+);

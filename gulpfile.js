@@ -161,7 +161,7 @@ gulp.task('copy:server', () => {
 
 gulp.task('start:server:prod', () => {
     process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-    nodemon(`-w --debug ${paths.dist}/${serverPath} ${paths.dist}/${serverPath}`).on('log', onServerLog);
+    nodemon(`-w ${paths.dist}/${serverPath} ${paths.dist}/${serverPath}`).on('log', onServerLog);
 });
 
 gulp.task('mocha:unit', () => {

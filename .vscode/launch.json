@@ -15,16 +15,20 @@
                 "NODE_ENV": "development"
             },
             "sourceMaps": true,
-            "outDir": "${workspaceRoot}/built"
+            "outDir": "${workspaceRoot}/built",
+            "preLaunchTask": "typescript"
         },
         {
-            "name": "Attach to Node",
+            "name": "start & debbug",
             "type": "node",
             "request": "attach",
             "port": 5858,
+            "address": "localhost",
             "sourceMaps": true,
             "outDir": "${workspaceRoot}/built",
-            "stopOnEntry": true
+            "localRoot": "${workspaceRoot}",
+            "remoteRoot": null,
+            "preLaunchTask": "serve"
         }
     ]
 }

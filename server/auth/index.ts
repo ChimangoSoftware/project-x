@@ -1,18 +1,15 @@
 'use strict';
 
-let express = require('express');
-let passport = require('passport');
-let config = require('./../config/environment');
+import express = require('express');
+// import passport = require('passport');
 import sqldb = require('../config/sequelize-config');
 
+let router = express.Router();
 //let User = sqldb.User;
 
 // Passport Configuration
 //require('./local/passport')(User, config);
-require('./local/passport')({}, config);
-
-var router = express.Router();
-
+require('./local/passport')({});
 router.use('/local', require('./local'));
 
 module.exports = router;

@@ -8,7 +8,6 @@ let errors = require('./components/errors');
 
 module.exports = function(app, seneca) {
 
-    // unique entry point
     app.post('/api/service', (req: express.Request, res: express.Response) => {
         var query = _.extend({ 'role': 'api' }, req.body);
         seneca.act(query, function(err, value) {

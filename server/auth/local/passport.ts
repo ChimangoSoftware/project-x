@@ -1,5 +1,5 @@
-let passport = require('passport');
-let passportLocal = require('passport-local');
+import passport = require('passport');
+import passportLocal = require('passport-local');
 let LocalStrategy = require('passport-local').Strategy;
 
 function localAuthenticate(User, email, password, done) {
@@ -7,8 +7,7 @@ function localAuthenticate(User, email, password, done) {
         where: {
             email: email.toLowerCase()
         }
-    })
-    .then(user => {
+    }).then(user => {
         if (!user) {
             return done(null, false, {
                 message: 'This email is not registered.'
@@ -24,11 +23,10 @@ function localAuthenticate(User, email, password, done) {
                 return done(null, user);
             }
         });
-    })
-    .catch(err => done(err));
+    }).catch(err => done(err));
 }
 
-module.exports = function setup(User, config) {
+module.exports = function setup(User) {
     passport.use(new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password' // this is the virtual field on the model

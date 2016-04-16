@@ -6,7 +6,7 @@ let expressJwt = require('express-jwt');
 let compose = require('composable-middleware');
 
 let config = require('../config/environment');
-let sqldb = require('./config/sequelize-config');
+let sqldb = require('../config/sequelize-config');
 
 let User = sqldb.User;
 
