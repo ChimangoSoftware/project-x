@@ -19,16 +19,14 @@
             "preLaunchTask": "typescript"
         },
         {
-            "name": "start & debbug",
+            "name": "attach server",
             "type": "node",
             "request": "attach",
             "port": 5858,
-            "address": "localhost",
             "sourceMaps": true,
             "outDir": "${workspaceRoot}/built",
-            "localRoot": "${workspaceRoot}",
-            "remoteRoot": null,
-            "preLaunchTask": "serve"
+            "stopOnEntry": true,
+            "restart": true
         }
     ]
 }

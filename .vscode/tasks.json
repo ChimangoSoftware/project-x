@@ -2,27 +2,10 @@
 	// See http://go.microsoft.com/fwlink/?LinkId=733558
 	// for the documentation about the tasks.json format
 	"version": "0.1.0",
-	"command": "gulp",
+	"command": "tsc",
 	"isShellCommand": true,
-	"args": [
-		"--no-color"
-	],
-	"tasks": [
-		{
-			"taskName": "typescript",
-			"args": [],
-			"isBuildCommand": true,
-			"isWatching": false,
-			"problemMatcher": [
-				"$tsc"
-			]
-		},
-		{
-			"taskName": "serve",
-			"args": [],
-			"isBuildCommand": false,
-			"isWatching": false,
-			"problemMatcher": []
-		}
-	]
+	"args": ["-w", "-p", "."],
+	"showOutput": "silent",
+	"isWatching": true,
+	"problemMatcher": "$tsc-watch"
 }

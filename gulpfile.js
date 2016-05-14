@@ -72,11 +72,14 @@ let istanbul = lazypipe()
 /********************
  * main Tasks
  ********************/
+// npm script: "server": "rimraf built && tsc && nodemon --debug built"
+// todo, poder correr nodemon y tsc -w en simultaneo
+
 gulp.task('serve', cb => {
     runSequence(
-        ['typescript'],
+        // ['typescript'],
         ['start:server'],
-        'watch',
+        // 'watch',
         cb);
 });
 
@@ -132,21 +135,37 @@ function onServerLog(log) {
  * private Tasks
  ********************/
 
-gulp.task('typescript', ['clean:built'], function () {
-
+/*gulp.task('typescript', ['clean:built'], function () {
     var tsProject = plugins.typescript.createProject('./tsconfig.json');
     var tsResult = gulp.src(paths.server.scripts)
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.typescript(tsProject));
 
     return merge2([
-        tsResult.js.pipe(plugins.sourcemaps.write("./", { sourceRoot: `${__dirname}/server` })).pipe(gulp.dest("built"))
+        tsResult
+            .js
+            .pipe(plugins.sourcemaps.write("./", { sourceRoot: `${__dirname}/server` }))
+            .pipe(gulp.dest("built"))
+    ]);
+});*/
+
+gulp.task('typescript', function () {
+    var tsProject = plugins.typescript.createProject('./tsconfig.json');
+    var tsResult = gulp.src(paths.server.scripts)
+        .pipe(plugins.sourcemaps.init())
+        .pipe(plugins.typescript(tsProject));
+
+    return merge2([
+        tsResult
+            .js
+            .pipe(plugins.sourcemaps.write("./", { sourceRoot: `${__dirname}/server` }))
+            .pipe(gulp.dest("built"))
     ]);
 });
 
 gulp.task('start:server', () => {
     process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-    nodemon(`-w ${builtPath} ${builtPath} --delay 2`).on('log', onServerLog);
+    nodemon(`--debug ${builtPath} --delay 2`).on('log', onServerLog);
 });
 
 gulp.task('watch', () => {
@@ -245,9 +264,9 @@ gulp.task('mocha:coverage', cb => {
 
 gulp.task('coverage:pre', () => {
     return gulp.src(paths.server.scripts)
-    // Covering files
+        // Covering files
         .pipe(plugins.babelIstanbul())
-    // Force `require` to return covered files
+        // Force `require` to return covered files
         .pipe(plugins.babelIstanbul.hookRequire());
 });
 
