@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 var app = require('../..');
 var request = require('supertest');
@@ -145,3 +145,4 @@ describe('Thing API:', function() {
     });
 
 });
+*/

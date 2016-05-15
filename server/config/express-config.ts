@@ -34,17 +34,21 @@ module.exports = function(app) {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use(cookieParser());
+    // passport
     app.use(passport.initialize());
+    require('../auth/local/passport')();
+
+
     // Persist sessions with sequelizeStore
     // We need to enable sessions for passport-twitter because it's an
     // oauth 1.0 strategy, and Lusca depends on sessions
-    app.use(session({
+/*    app.use(session({
         secret: config.secrets.session,
         saveUninitialized: true,
         resave: false,
         store: new Store(sequelizeInstance)
     }));
-    app.use(morgan('dev'));
+    app.use(morgan('dev'));*/
 
     /**
      * Lusca - express server security

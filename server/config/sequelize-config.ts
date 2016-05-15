@@ -1,8 +1,7 @@
-import Sequelize = require('sequelize');
+import sequelize = require('sequelize');
 import config = require('./environment');
 
-// Create connection
-let sequelizeInstance = new Sequelize  (
+let sequelizeInstance = new sequelize(
     config.sequelize.database,
     config.sequelize.username,
     config.sequelize.password,

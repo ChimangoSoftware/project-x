@@ -1,6 +1,6 @@
 'use strict';
 
-var express = require('express');
+import express = require('express');
 var bodyParser = require('body-parser');
 var http = require('http');
 
@@ -14,9 +14,11 @@ import sequelizeInstance = require('./config/sequelize-config');
 //if (config.seedDB) { require('./config/seed'); }
 
 // server
-var app = express();
+let app = express();
 app.use(bodyParser.json());
-var server = http.createServer(app);
+let server = http.createServer(app);
+
+require('./config/express-config')(app);
 
 // socketio
 /*
@@ -28,7 +30,14 @@ require('./config/socketio')(socketio);
 */
 
 // seneca
-let seneca = require('seneca')();
+let seneca = require('seneca');
+seneca = seneca({
+  log: {
+    map: [
+      { level: 'ERROR',  handler: 'print' }
+    ]
+  }
+});
 
 require('./config/seneca-config')(app, seneca);
 
@@ -36,7 +45,6 @@ require('./config/seneca-config')(app, seneca);
 require('./routes')(app, seneca);
 
 // Start server - express
-require('./config/express-config')(app);
 function startServer() {
     server.listen(config.port, config.ip, function() {
         console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));

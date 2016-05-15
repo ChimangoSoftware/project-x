@@ -1,24 +1,20 @@
-'use strict';
-
+import sequelize = require('sequelize');
 var crypto2 = require('crypto');
 
-var validatePresenceOf = function(value) {
-  return value && value.length;
-};
 
-module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define('User', {
-
+export = function (sequelizeInstance: sequelize.Sequelize): sequelize.Model<model.User, model.UserAttributes> {
+  let attributes: sequelize.DefineAttributes = {
     _id: {
-      type: DataTypes.INTEGER,
+      type: sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    name: DataTypes.STRING,
+    name: sequelize.STRING,
     email: {
-      type: DataTypes.STRING,
+      type: sequelize.STRING,
       unique: {
+        name: 'email',
         msg: 'The specified email address is already in use.'
       },
       validate: {
@@ -26,26 +22,24 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     role: {
-      type: DataTypes.STRING,
+      type: sequelize.STRING,
       defaultValue: 'user'
     },
     password: {
-      type: DataTypes.STRING,
+      type: sequelize.STRING,
       validate: {
         notEmpty: true
       }
     },
-    provider: DataTypes.STRING,
-    salt: DataTypes.STRING
+    provider: sequelize.STRING,
+    salt: sequelize.STRING
+  };
 
-  }, {
+  let options: sequelize.DefineOptions<model.User> = {
 
-    /**
-     * Virtual Getters
-     */
     getterMethods: {
       // Public profile information
-      profile: function() {
+      profile: function () {
         return {
           'name': this.name,
           'role': this.role
@@ -53,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
       },
 
       // Non-sensitive info we'll be putting in the token
-      token: function() {
+      token: function () {
         return {
           '_id': this._id,
           'role': this.role
@@ -61,14 +55,11 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
 
-    /**
-     * Pre-save hooks
-     */
     hooks: {
-      beforeBulkCreate: function(users, fields, fn) {
+      beforeBulkCreate: function (users, fields, fn) {
         var totalUpdated = 0;
-        users.forEach(function(user) {
-          user.updatePassword(function(err) {
+        users.forEach(function (user: any) {
+          user.updatePassword(function (err) {
             if (err) {
               return fn(err);
             }
@@ -79,10 +70,10 @@ module.exports = function(sequelize, DataTypes) {
           });
         });
       },
-      beforeCreate: function(user, fields, fn) {
+      beforeCreate: function (user: any, fields, fn) {
         user.updatePassword(fn);
       },
-      beforeUpdate: function(user, fields, fn) {
+      beforeUpdate: function (user: any, fields, fn) {
         if (user.changed('password')) {
           return user.updatePassword(fn);
         }
@@ -90,9 +81,6 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
 
-    /**
-     * Instance Methods
-     */
     instanceMethods: {
       /**
        * Authenticate - check if the passwords are the same
@@ -102,13 +90,13 @@ module.exports = function(sequelize, DataTypes) {
        * @return {Boolean}
        * @api public
        */
-      authenticate: function(password, callback) {
+      authenticate: function (password: string, callback: Function): any {
         if (!callback) {
           return this.password === this.encryptPassword(password);
         }
 
         var _this = this;
-        this.encryptPassword(password, function(err, pwdGen) {
+        this.encryptPassword(password, function (err, pwdGen) {
           if (err) {
             callback(err);
           }
@@ -129,14 +117,13 @@ module.exports = function(sequelize, DataTypes) {
        * @return {String}
        * @api public
        */
-      makeSalt: function(byteSize, callback) {
+      makeSalt: function (byteSize, callback) {
         var defaultByteSize = 16;
 
         if (typeof arguments[0] === 'function') {
           callback = arguments[0];
           byteSize = defaultByteSize;
-        }
-        else if (typeof arguments[1] === 'function') {
+        } else if (typeof arguments[1] === 'function') {
           callback = arguments[1];
         }
 
@@ -148,7 +135,7 @@ module.exports = function(sequelize, DataTypes) {
           return crypto2.randomBytes(byteSize).toString('base64');
         }
 
-        return crypto2.randomBytes(byteSize, function(err, salt) {
+        return crypto2.randomBytes(byteSize, function (err, salt) {
           if (err) {
             callback(err);
           }
@@ -164,7 +151,7 @@ module.exports = function(sequelize, DataTypes) {
        * @return {String}
        * @api public
        */
-      encryptPassword: function(password, callback) {
+      encryptPassword: function (password, callback) {
         if (!password || !this.salt) {
           if (!callback) {
             return null;
@@ -178,11 +165,11 @@ module.exports = function(sequelize, DataTypes) {
 
         if (!callback) {
           return crypto2.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength)
-                       .toString('base64');
+            .toString('base64');
         }
 
         return crypto2.pbkdf2(password, salt, defaultIterations, defaultKeyLength,
-          function(err, key) {
+          function (err, key) {
             if (err) {
               callback(err);
             }
@@ -197,21 +184,21 @@ module.exports = function(sequelize, DataTypes) {
        * @return {String}
        * @api public
        */
-      updatePassword: function(fn) {
+      updatePassword: function (fn) {
         // Handle new/update passwords
         if (this.password) {
-          if (!validatePresenceOf(this.password)) {
+          if (!this.password || !this.password.length) {
             fn(new Error('Invalid password'));
           }
 
           // Make salt with a callback
           var _this = this;
-          this.makeSalt(function(saltErr, salt) {
+          this.makeSalt(function (saltErr, salt) {
             if (saltErr) {
               fn(saltErr);
             }
             _this.salt = salt;
-            _this.encryptPassword(_this.password, function(encryptErr, hashedPassword) {
+            _this.encryptPassword(_this.password, function (encryptErr, hashedPassword) {
               if (encryptErr) {
                 fn(encryptErr);
               }
@@ -224,7 +211,7 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     }
-  });
+  };
 
-  return User;
+  return sequelizeInstance.define('User', attributes, options);
 };

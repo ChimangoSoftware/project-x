@@ -2,18 +2,18 @@ import passport = require('passport');
 import passportLocal = require('passport-local');
 let LocalStrategy = require('passport-local').Strategy;
 
-function localAuthenticate(User, email, password, done) {
-    User.find({
-        where: {
-            email: email.toLowerCase()
-        }
-    }).then(user => {
+import sequelizeInstance = require('../../config/sequelize-config');
+import UserDao from '../../api/user/user.dao';
+
+function localAuthenticate(email: string, password: string, done: Function) {
+    let User = new UserDao(sequelizeInstance);
+
+    User.find({ where: { email: email.toLowerCase() } }, (err, user) => {
+        if (err) { done(err); }
         if (!user) {
-            return done(null, false, {
-                message: 'This email is not registered.'
-            });
+            return done(null, false, { message: 'This email is not registered.' });
         }
-        user.authenticate(password, function(authError, authenticated) {
+        user.authenticate(password, function (authError, authenticated) {
             if (authError) {
                 return done(authError);
             }
@@ -23,14 +23,14 @@ function localAuthenticate(User, email, password, done) {
                 return done(null, user);
             }
         });
-    }).catch(err => done(err));
+    });
 }
 
-module.exports = function setup(User) {
+module.exports = () => {
     passport.use(new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password' // this is the virtual field on the model
-    }, function(email, password, done) {
-        return localAuthenticate(User, email, password, done);
+    }, function (email: string, password: string, done: Function) {
+        return localAuthenticate(email, password, done);
     }));
-}
+};

@@ -1,6 +1,6 @@
 /**
- * User model events
- */
+
+
 
 'use strict';
 
@@ -34,3 +34,5 @@ function emitEvent(event) {
 }
 
 export default UserEvents;
+
+*/
