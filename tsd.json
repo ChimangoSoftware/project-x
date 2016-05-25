@@ -61,6 +61,9 @@
     },
     "passport-local/passport-local.d.ts": {
       "commit": "6766ed1d0faf02ede9e2edf2e66bbb2388c825ec"
+    },
+    "es6-collections/es6-collections.d.ts": {
+      "commit": "b9989e602b3225d48aa4a9dfa0631ae41fea100d"
     }
   }
 }

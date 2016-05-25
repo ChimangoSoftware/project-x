@@ -1,10 +1,4 @@
-'use strict';
-
-// Development specific configuration
-// ==================================
 module.exports = {
-
-  // Sequelize connecton opions
   sequelize: {
     database: 'chimango',
     username: 'postgres',
@@ -16,8 +10,5 @@ module.exports = {
     }
   },
 
-  // Seed database on startup
-
   seedDB: false
-
 };

@@ -1,5 +1,3 @@
-'use strict';
-
 /*let sqldb = require('../../sqldb');
 let User = {};
 let passport = require('passport');

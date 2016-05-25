@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "main": "built/app.js",
   "scripts": {
-    "server": "rimraf built && tsc && gulp serve"
+    "tsc": "rimraf built && tsc",
+    "server": "set NODE_ENV=development && npm run tsc && gulp serve",
+    "testServer": "set NODE_ENV=test && npm run tsc && gulp test:server"
   },
   "dependencies": {
     "babel-runtime": "^5.8.20",

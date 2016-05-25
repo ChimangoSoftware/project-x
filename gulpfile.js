@@ -20,8 +20,8 @@ const paths = {
         builtScripts: [`${builtPath}/**/*.js`],
         json: [`${serverPath}/**/*.json`],
         test: {
-            integration: `${serverPath}/**/*.integration.js`,
-            unit: `${serverPath}/**/*.spec.js`
+            integration: `${builtPath}/**/*.integration.spec.js`,
+            unit: `${builtPath}/**/*.spec.js`
         }
     },
     karma: 'karma.conf.js',
@@ -98,7 +98,7 @@ gulp.task('test:server', cb => {
         'env:test',
         'mocha:unit',
         'mocha:integration',
-        'mocha:coverage',
+       // 'mocha:coverage',
         cb);
 });
 
@@ -184,13 +184,11 @@ gulp.task('start:server:prod', () => {
 });
 
 gulp.task('mocha:unit', () => {
-    return gulp.src(paths.server.test.unit)
-        .pipe(mocha());
+    return gulp.src(paths.server.test.unit).pipe(mocha());
 });
 
 gulp.task('mocha:integration', () => {
-    return gulp.src(paths.server.test.integration)
-        .pipe(mocha());
+    return gulp.src(paths.server.test.integration).pipe(mocha());
 });
 
 gulp.task('clean:dist', () => del([`${paths.dist}/!(.git*|.openshift|Procfile)**`], { dot: true }));

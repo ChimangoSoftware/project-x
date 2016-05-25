@@ -49,8 +49,7 @@ export = function (sequelizeInstance: sequelize.Sequelize): sequelize.Model<mode
       // Non-sensitive info we'll be putting in the token
       token: function () {
         return {
-          '_id': this._id,
-          'role': this.role
+          '_id': this._id
         };
       }
     },

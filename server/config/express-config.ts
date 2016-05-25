@@ -36,7 +36,7 @@ module.exports = function(app) {
     app.use(cookieParser());
     // passport
     app.use(passport.initialize());
-    require('../auth/local/passport')();
+    require('../auth/passport/local')();
 
 
     // Persist sessions with sequelizeStore

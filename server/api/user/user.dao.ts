@@ -1,11 +1,12 @@
 import sequelize = require('sequelize');
 import userSequelizeModel = require('./user.model.seq');
+import sequelizeInstance = require('../../config/sequelize-config');
 
 export default class UserDao implements service.UserService {
 
     model: sequelize.Model<model.User, model.UserAttributes>;
 
-    constructor(sequelizeInstance: sequelize.Sequelize) {
+    constructor() {
         this.model = userSequelizeModel(sequelizeInstance);
     }
 

@@ -3,7 +3,6 @@
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
 
-'use strict';
 import squelizeInstance = require('./sequelize-config');
 
 //var clienteSequalize = require('./../api/cliente/modelo.seq');

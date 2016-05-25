@@ -1,20 +1,13 @@
-'use strict';
-
-// Test specific configuration
-// ===========================
 module.exports = {
-  // MongoDB connection options
-  mongo: {
-    uri: 'mongodb://localhost/afs-test'
-  },
   sequelize: {
-    uri: 'sqlite://',
+    database: 'chimangoTest',
+    username: 'postgres',
+    passowrd: '1234',
     options: {
-      logging: false,
-      storage: 'test.sqlite',
-      define: {
-        timestamps: false
-      }
+      host: 'localhost',
+      dialect: 'postgres',
+      timestamps: false,
+      logging: false
     }
   }
 };

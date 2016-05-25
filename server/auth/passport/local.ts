@@ -2,11 +2,10 @@ import passport = require('passport');
 import passportLocal = require('passport-local');
 let LocalStrategy = require('passport-local').Strategy;
 
-import sequelizeInstance = require('../../config/sequelize-config');
 import UserDao from '../../api/user/user.dao';
 
 function localAuthenticate(email: string, password: string, done: Function) {
-    let User = new UserDao(sequelizeInstance);
+    let User = new UserDao();
 
     User.find({ where: { email: email.toLowerCase() } }, (err, user) => {
         if (err) { done(err); }

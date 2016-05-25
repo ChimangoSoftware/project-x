@@ -1,6 +1,10 @@
 import sequelize = require('sequelize');
 
-export = function clienteSequalize(sequelizeInstance: sequelize.Sequelize): sequelize.Model<model.Cliente, model.ClienteAttributes> {
+export interface ClienteInstance extends sequelize.Instance<model.Cliente>, model.Cliente { }
+
+export interface ClienteModel extends sequelize.Model<ClienteInstance, model.Cliente> { }
+
+export function clienteSequalize(sequelizeInstance: sequelize.Sequelize): sequelize.Model<ClienteInstance, model.Cliente> {
     let attributes: sequelize.DefineAttributes = {
         _id: {
             type: sequelize.INTEGER,
@@ -20,5 +24,5 @@ export = function clienteSequalize(sequelizeInstance: sequelize.Sequelize): sequ
         }
     };
 
-    return sequelizeInstance.define('Cliente', attributes, options);
+    return sequelizeInstance.define<ClienteInstance, model.Cliente>('Cliente', attributes, options);
 }

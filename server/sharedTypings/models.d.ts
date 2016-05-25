@@ -1,3 +1,5 @@
+/// <reference path="../../typings/sequelize/sequelize.d.ts" />
+
 declare namespace model {
 
     interface UserAttributes {
@@ -13,12 +15,9 @@ declare namespace model {
         authenticate(password: string, callback: Function): void;
     }
 
-    interface ClienteAttributes {
+    interface Cliente {
         _id?: number;
         nombre: string;
         apellido: string;
-    }
-    interface Cliente extends model.ClienteAttributes {
-        nombreCompleto(): string;
     }
 }
