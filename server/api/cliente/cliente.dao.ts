@@ -14,48 +14,42 @@ export default class ClienteDao implements service.ClienteService {
     create(cliente: model.Cliente): Promise<model.Cliente> {
         return new Promise<model.Cliente>((resolve, reject) => {
             this.model.create(cliente)
-                .then((dbCliente) => { resolve(dbCliente.toJSON()) })
-                .catch((error) => { reject(error) });
+                .then((dbCliente) => resolve(dbCliente.toJSON()))
+                .catch((error) => reject(error));
         });
     }
 
     list(): Promise<model.Cliente[]> {
-        let resolver = Promise.defer<model.Cliente[]>();
-        this.model.findAll()
-            .then((clientes: model.Cliente[]) => resolver.resolve(clientes))
-            .catch((err) => resolver.reject(err));
-        return resolver.promise;
+        return new Promise<model.Cliente[]>((resolve, reject) => {
+            this.model.findAll()
+                .then((clientes: model.Cliente[]) => resolve(clientes))
+                .catch((err) => reject(err));
+        });
     };
 
     getById(id: number): Promise<model.Cliente> {
-        let resolver = Promise.defer<model.Cliente>();
-        this.model.findById(id)
-            .then((cliente) => resolver.resolve(cliente.toJSON()))
-            .catch((err) => resolver.reject(err));
-        return resolver.promise;
+        return new Promise<model.Cliente>((resolve, reject) => {
+            this.model.findById(id)
+                .then((cliente) => resolve(cliente.toJSON()))
+                .catch((err) => reject(err));
+
+        })
     };
 
     update(cliente: model.Cliente): Promise<model.Cliente> {
-        let resolver = Promise.defer<model.Cliente>();
-        this.model.findById(cliente._id)
-            .then((dbCliente) => {
-                dbCliente.update(cliente)
-                    .then((updatedCliente) => resolver.resolve(updatedCliente.toJSON()))
-                    .catch((err) => resolver.reject(err));
-            })
-            .catch((err) => resolver.reject(err));
-        return resolver.promise;
+        return new Promise<model.Cliente>((resolve, reject) => {
+            this.model.update(cliente, { where: { _id: cliente._id }, returning: true })
+                .then((response) => resolve(response[1][0].toJSON()))
+                .catch((err) => reject(err));
+        })
     }
 
     delete(id: number): Promise<service.DeleteResponse> {
-        let resolver = Promise.defer<service.DeleteResponse>();
-        this.model.findById(id)
-            .then((dbCliente) => {
-                dbCliente.destroy(dbCliente)
-                    .then((updatedCliente) => resolver.resolve({ result: true }))
-                    .catch((err) => resolver.reject(err));
-            })
-            .catch((err) => resolver.reject(err));
-        return resolver.promise;
+        return new Promise<service.DeleteResponse>((resolve, reject) => {
+            this.model.destroy({ where: { _id: id } })
+                .then((updatedCliente) => resolve({ result: true }))
+                .catch((err) => reject(err));
+
+        });
     }
 }
