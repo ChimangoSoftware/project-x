@@ -5,7 +5,7 @@ export interface ClienteInstance extends sequelize.Instance<model.Cliente>, mode
 export interface ClienteModel extends sequelize.Model<ClienteInstance, model.Cliente> { }
 
 export function clienteSequalize(sequelizeInstance: sequelize.Sequelize): sequelize.Model<ClienteInstance, model.Cliente> {
-    let attributes: sequelize.DefineAttributes = {
+    const attributes: sequelize.DefineAttributes = {
         _id: {
             type: sequelize.INTEGER,
             allowNull: false,
@@ -13,10 +13,25 @@ export function clienteSequalize(sequelizeInstance: sequelize.Sequelize): sequel
             autoIncrement: true
         },
         nombre: sequelize.STRING,
-        apellido: sequelize.STRING
+        apellido: sequelize.STRING,
+        tipoDocumento: sequelize.INTEGER,
+        numeroDocumento: sequelize.INTEGER,
+        sexo: sequelize.ENUM('F', 'M'),
+        fechaNacimiento: sequelize.DATE,
+        cuit: sequelize.STRING,
+        cuil: sequelize.STRING,
+        nacionalidad: sequelize.STRING,
+        estadoCivil: sequelize.ENUM('soltero', 'casado', 'divorciado', 'concubino', 'separado'),
+        conyuge: sequelize.JSON,
+        provincia: sequelize.STRING,
+        CPA: sequelize.INTEGER,
+        direcciones: sequelize.ARRAY(sequelize.JSON),
+        telefonos: sequelize.ARRAY(sequelize.JSON),
+        relacionDependencia: sequelize.ARRAY(sequelize.JSON),
+        actividadComercial: sequelize.JSON
     };
 
-    let options: sequelize.DefineOptions<model.Cliente> = {
+    const options: sequelize.DefineOptions<model.Cliente> = {
         instanceMethods: {
             nombreCompleto: () => {
                 return this.nombre + ', ' + this.apellido;

@@ -7,7 +7,7 @@ function requiredProcessEnv(name) {
     if (!name) {
         throw new Error('You must set the NODE_ENV environment variable');
     }
-    return process.env.NODE_ENV;
+    return name;
 }
 
 // All configurations will extend these options

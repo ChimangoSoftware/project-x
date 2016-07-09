@@ -9,6 +9,5 @@ module.exports = {
       timestamps: false
     }
   },
-
   seedDB: false
 };

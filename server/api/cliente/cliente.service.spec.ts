@@ -20,7 +20,10 @@ sinon.stub(clienteDao, 'delete', () => Promise.resolve());
 let clienteInstance: model.Cliente = {
     _id: 1,
     nombre: 'nombre',
-    apellido: 'apellido'
+    apellido: 'apellido',
+    tipoDocumento: enums.tipoDocumento.DNI,
+    numeroDocumento: 30123456,
+    sexo: enums.sexo.M
 };
 
 describe('ClienteService', () => {

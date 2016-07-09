@@ -5,8 +5,8 @@
 
 import squelizeInstance = require('./sequelize-config');
 
-//var clienteSequalize = require('./../api/cliente/modelo.seq');
-//clienteSequalize(squelizeInstance).sync();
+var clienteSequalize = require('./../api/cliente/modelo.seq');
+clienteSequalize(squelizeInstance).sync();
 
 
 /*

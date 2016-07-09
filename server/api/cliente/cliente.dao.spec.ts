@@ -8,7 +8,10 @@ describe('ClienteDao', () => {
     let clienteDao = new ClienteDao();
     let testCliente: model.Cliente = {
         nombre: 'nombre',
-        apellido: 'apellido'
+        apellido: 'apellido',
+        tipoDocumento: enums.tipoDocumento.DNI,
+        numeroDocumento: 30123456,
+        sexo: enums.sexo.M
     };
 
     before((done) => {

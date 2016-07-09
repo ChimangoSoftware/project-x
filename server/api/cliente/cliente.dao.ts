@@ -12,11 +12,11 @@ export default class ClienteDao implements service.ClienteService {
     }
 
     create(cliente: model.Cliente): Promise<model.Cliente> {
-        let resolver = Promise.defer<model.Cliente>();
-        this.model.create(cliente)
-            .then((dbCliente) => resolver.resolve(dbCliente.toJSON()))
-            .catch((err) => resolver.reject(err));
-        return resolver.promise;
+        return new Promise<model.Cliente>((resolve, reject) => {
+            this.model.create(cliente)
+                .then((dbCliente) => { resolve(dbCliente.toJSON()) })
+                .catch((error) => { reject(error) });
+        });
     }
 
     list(): Promise<model.Cliente[]> {
