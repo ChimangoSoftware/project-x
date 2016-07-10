@@ -7,17 +7,18 @@ import {signToken} from './auth/auth.service';
 
 module.exports = function (app: express.Application, seneca: any) {
 
-    // local authentication
-    app.post('/auth/local', function (req, res, next) {
-        passport.authenticate('local', function (err, user, info) {
-            let error = err || info;
-            if (error || !user) {
-                return res.status(401).json(error);
+    app.get('/login',
+        passport.authenticate('auth0', { failureRedirect: '/url-if-something-fails' }),
+        function (req: express.Request, res: express.Response) {
+            if (!req.user) {
+                throw new Error('user null');
             }
+            res.redirect("/user");
+        }
+    );
 
-            let token = signToken(user._id, user.role);
-            res.json({ token });
-        })(req, res, next);
+    app.get('/user', function (req, res) {
+        res.json(req.user);
     });
 
     // request to seneca
@@ -25,7 +26,7 @@ module.exports = function (app: express.Application, seneca: any) {
         var query = _.extend({ 'role': 'api' }, req.body);
         seneca.act(query, function (err, value) {
             if (err) {
-                var status = err.status ? err.status : 400;
+                const status = err.status ? err.status : 400;
                 res.status(status).json(err);
             } else {
                 res.json(value);
