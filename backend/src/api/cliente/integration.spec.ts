@@ -1,7 +1,7 @@
 let request = require('supertest');
 let app = require('../..');
 
-import ClienteDao from './cliente.dao';
+import ClienteDao = require('./cliente.dao');
 
 declare let expect: Sinon.SinonExpectation;
 

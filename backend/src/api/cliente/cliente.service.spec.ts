@@ -1,4 +1,4 @@
-import ClienteService from './cliente.service';
+import ClienteService = require('./cliente.service');
 import Promise = require('bluebird');
 
 declare let assert: Chai.Assert;
