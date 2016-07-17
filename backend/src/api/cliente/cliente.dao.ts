@@ -3,7 +3,7 @@ import Promise = require('bluebird');
 import {clienteSequalize, ClienteModel, ClienteInstance} from './cliente.model.seq';
 import sequelizeInstance = require('../../config/sequelize-config');
 
-export default class ClienteDao implements service.ClienteService {
+class ClienteDao implements service.ClienteService {
 
     public model: sequelize.Model<ClienteInstance, model.Cliente>;
 
@@ -53,3 +53,5 @@ export default class ClienteDao implements service.ClienteService {
         });
     }
 }
+
+export = ClienteDao;

@@ -1,7 +1,7 @@
 import express = require('express');
 
-import ClienteService from './../api/cliente/cliente.service';
-import ClienteDao from '../api/cliente/cliente.dao';
+import ClienteService = require('./../api/cliente/cliente.service');
+import ClienteDao = require('../api/cliente/cliente.dao');
 
 module.exports = function config(app: express.Application, seneca: any) {
 

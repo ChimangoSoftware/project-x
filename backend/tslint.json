@@ -1,7 +1,4 @@
 {
-  "exclude": [
-      "node.d.ts"
-  ],
   "rules": {
     "class-name": true,
     "curly": true,

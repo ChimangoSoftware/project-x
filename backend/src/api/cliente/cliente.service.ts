@@ -1,8 +1,9 @@
-import ClienteDao from './cliente.dao';
+import Promise = require('bluebird');
+import ClienteDao = require('./cliente.dao');
 import SenecaService = require('../../seneca.service');
 
 @SenecaService({ role: 'api', service: 'clienteService' })
-export default class ClienteService implements service.ClienteService {
+class ClienteService implements service.ClienteService {
 
     static getClass(): any {
         return ClienteService;
@@ -43,3 +44,4 @@ export default class ClienteService implements service.ClienteService {
 
 }
 
+export = ClienteService;

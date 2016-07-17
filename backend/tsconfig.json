@@ -8,11 +8,11 @@
         "preserveConstEnums": true,
         "removeComments": false,
         "sourceMap": true,
-        "outDir": "built",
+        "outDir": "build",
         "experimentalDecorators": true
     },
     "exclude": [
-        "built",
+        "build",
         "coverage",
         "node_modules",
         "typings"

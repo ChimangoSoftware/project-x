@@ -1,7 +1,7 @@
 {
   "name": "chimango",
   "version": "0.0.0",
-  "main": "built/app.js",
+  "main": "build/app.js",
   "scripts": {
     "start": "gulp start",
     "test": "set NODE_ENV=test&& npm run tsc && gulp test:server",
