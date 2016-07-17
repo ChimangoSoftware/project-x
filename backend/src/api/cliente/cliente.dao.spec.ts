@@ -1,5 +1,4 @@
 import ClienteDao = require('./Cliente.dao');
-
 declare let assert: Chai.Assert;
 declare let expect: Chai.ExpectStatic;
 
