@@ -1,10 +1,7 @@
 npm-debug.log
-node_modules
-.tmp
-.sass-cache
-dist
-built
-/server/config/local.env.js
 
-typings/*
-!server/typings/local.d.ts
+/backend/node_modules
+/backend/build
+/backend/config/local.env.js
+/backend/typings/*
+!backend/typings/local.d.ts

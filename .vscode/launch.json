@@ -6,7 +6,7 @@
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceRoot}",
-            "program": "${workspaceRoot}/server/app.ts",
+            "program": "${workspaceRoot}/backend/src/app.ts",
             "stopOnEntry": false,
             "args": [],
             "runtimeExecutable": null,
@@ -15,7 +15,7 @@
                 "NODE_ENV": "development"
             },
             "sourceMaps": true,
-            "outDir": "${workspaceRoot}/built",
+            "outDir": "${workspaceRoot}/backend/build",
             "preLaunchTask": "typescript"
         },
         {
@@ -24,7 +24,7 @@
             "request": "attach",
             "port": 5858,
             "sourceMaps": true,
-            "outDir": "${workspaceRoot}/built",
+            "outDir": "${workspaceRoot}/backend/build",
             "stopOnEntry": true,
             "restart": true
         }

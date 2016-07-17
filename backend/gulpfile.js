@@ -1,45 +1,81 @@
 'use strict';
 
-var _ = require('lodash');
-var del = require('del');
-var gulp = require('gulp');
-var lazypipe = require('lazypipe');
-var nodemon = require('nodemon');
-var runSequence = require('run-sequence');
-var merge2 = require('merge2');
+const _ = require('lodash');
+const del = require('del');
+const gulp = require('gulp');
+const lazypipe = require('lazypipe');
+const nodemon = require('nodemon');
+const runSequence = require('run-sequence');
+const merge2 = require('merge2');
+const path = require('path');
+const gulpLoadPlugins = require('gulp-load-plugins');
+const plugins = gulpLoadPlugins();
 
-var gulpLoadPlugins = require('gulp-load-plugins');
-var plugins = gulpLoadPlugins();
+const tsProject = plugins.typescript.createProject('tsconfig.json');
 
-const serverPath = 'server';
-const builtPath = 'built';
-const builtPathSrc = 'built/server';
+const backend = 'backend';
+const buildPath = 'build';
 const paths = {
     server: {
-        scripts: [`${serverPath}/**/*!(*.spec|*.integration).ts`],
-        builtScripts: [`${builtPath}/**/*.js`],
-        json: [`${serverPath}/**/*.json`],
+        scripts: 'src/**/*.ts',
+        builtScripts: [`${buildPath}/**/*.js`],
+        json: [`${backend}/**/*.json`],
         test: {
-            integration: `${builtPath}/**/*.integration.spec.js`,
-            unit: `${builtPath}/**/*.spec.js`
+            integration: `${buildPath}/src/**/*.integration.spec.js`,
+            unit: `${buildPath}/src/**/*.spec.js`
         }
     },
     dist: 'dist'
 };
 
 /********************
- * main Tasks
+ * Start
  ********************/
-// npm script: "server": "rimraf built && tsc && nodemon --debug built"
-// toDo: poder correr nodemon y tsc -w en simultaneo
 
-gulp.task('serve', cb => {
+gulp.task('start', cb => {
     runSequence(
-        // ['typescript'],
-        ['start:server'],
-        // 'watch',
+        'clean:build',
+        'typescript',
+        'start:server',
+        'watch',
         cb);
 });
+
+gulp.task('typescript', () => {
+    let tsResult = tsProject.src(paths.server.scripts)
+        .pipe(plugins.sourcemaps.init())
+        .pipe(plugins.typescript(tsProject));
+
+    return tsResult
+        .js
+        .pipe(plugins.sourcemaps.write('.', {
+            sourceRoot: (file) => {
+                // file.cwd >  'C:\Users\nicosampler\developer\project-x\backend'
+                const backendPath = file.cwd;
+                const srcBackendPath = path.join(backendPath, 'src');
+                const currentFile = file.sourceMap.file;
+                const fullPathFile = path.join(srcBackendPath, currentFile);
+                const relativePath = path.relative(path.dirname(fullPathFile), backendPath);
+                return path.join(relativePath, 'src');
+            }
+        }))
+        .pipe(gulp.dest(buildPath));
+})
+
+gulp.task('start:server', () => {
+    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+    nodemon(`--debug ${buildPath} --delay 2`).on('log', onServerLog);
+});
+
+gulp.task('watch', () => {
+    plugins.watch(paths.server.scripts, () => {
+        gulp.run('typescript');
+    });
+});
+
+/********************
+ * Test
+ ********************/
 
 gulp.task('test:server', cb => {
     runSequence(
@@ -75,6 +111,7 @@ let istanbul = lazypipe()
     });
 
 
+
 /********************
  * Helper functions
  ********************/
@@ -86,10 +123,7 @@ function onServerLog(log) {
         log.message);
 }
 
-gulp.task('start:server', () => {
-    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-    nodemon(`--debug ${builtPath} --delay 2`).on('log', onServerLog);
-});
+
 
 gulp.task('test:unit', () => {
     return gulp.src(paths.server.test.unit).pipe(mocha());
@@ -105,7 +139,7 @@ gulp.task('clean:dist', () => del([`${paths.dist}/!(.git*|.openshift|Procfile)**
 
 gulp.task('clean:tmp', () => del(['.tmp/**/*'], { dot: true }));
 
-gulp.task('clean:built', () => del(['built/**/*'], { dot: true }));
+gulp.task('clean:build', () => del(['build/**/*'], { dot: true }));
 
 gulp.task('clean:dist', () => del([`${paths.dist}/!(.git*|.openshift|Procfile)**`], { dot: true }));
 
@@ -115,7 +149,7 @@ gulp.task('clean:dist', () => del([`${paths.dist}/!(.git*|.openshift|Procfile)**
 gulp.task('env:all', () => {
     let localConfig;
     try {
-        localConfig = require(`./${serverPath}/config/local.env`);
+        localConfig = require(`./${backend}/config/local.env`);
     } catch (e) {
         localConfig = {};
     }
@@ -135,28 +169,22 @@ gulp.task('coverage:pre', () => {
         .pipe(plugins.babelIstanbul.hookRequire());
 });
 
-
-/*gulp.task('watch', () => {
-    plugins.watch(paths.server.scripts, function () {
-        gulp.run('typescript');
-    });
-});
-
+/*
 gulp.task('copy:server', () => {
     return gulp.src(['package.json'], { cwdbase: true }).pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('start:server:prod', () => {
     process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-    nodemon(`-w ${paths.dist}/${serverPath} ${paths.dist}/${serverPath}`).on('log', onServerLog);
+    nodemon(`-w ${paths.dist}/${backend} ${paths.dist}/${backend}`).on('log', onServerLog);
 });
 
 let lintServerScripts = lazypipe()
-    .pipe(plugins.jshint, `${serverPath}/.jshintrc`)
+    .pipe(plugins.jshint, `${backend}/.jshintrc`)
     .pipe(plugins.jshint.reporter, 'jshint-stylish');
 
 let lintServerTestScripts = lazypipe()
-    .pipe(plugins.jshint, `${serverPath}/.jshintrc-spec`)
+    .pipe(plugins.jshint, `${backend}/.jshintrc-spec`)
     .pipe(plugins.jshint.reporter, 'jshint-stylish');
 
 gulp.task('build', cb => {
