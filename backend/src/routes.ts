@@ -1,41 +1,26 @@
-import path = require('path');
 import express = require('express');
 import _ = require('lodash');
-import passport = require('passport');
-import {signToken} from './auth/auth.service';
-
+const jwt = require('express-jwt');
+const config = require('./config/environment');
 
 module.exports = function (app: express.Application, seneca: any) {
 
-    app.get('/login',
-        passport.authenticate('auth0', { failureRedirect: '/url-if-something-fails' }),
-        function (req: express.Request, res: express.Response) {
-            if (!req.user) {
-                throw new Error('user null');
-            }
-            res.redirect("/user");
+  // request to seneca
+  app.post('/api/service',
+    jwt({ secret: new Buffer(config.tokenSecret, 'base64') }),
+    (req: express.Request, res: express.Response, next: express.NextFunction) => {
+
+      console.log(req.user);
+
+      var query = _.extend({ 'role': 'api' }, req.body);
+      seneca.act(query, function (err, value) {
+        if (err) {
+          const status = err.status ? err.status : 400;
+          res.status(status).json(err);
+        } else {
+          res.json(value);
         }
-    );
-
-    app.get('/user', function (req, res) {
-        res.json(req.user);
+      });
     });
 
-    // request to seneca
-    app.post('/api/service', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        var query = _.extend({ 'role': 'api' }, req.body);
-        seneca.act(query, function (err, value) {
-            if (err) {
-                const status = err.status ? err.status : 400;
-                res.status(status).json(err);
-            } else {
-                res.json(value);
-            }
-        });
-    });
-
-    // All other routes should redirect to the index.html
-    app.get('/*', (req, res) => {
-        res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-    });
 };

@@ -3,6 +3,8 @@
 var path = require('path');
 var _ = require('lodash');
 
+require('dotenv').config();
+
 function requiredProcessEnv(name) {
     if (!name) {
         throw new Error('You must set the NODE_ENV environment variable');
@@ -26,6 +28,8 @@ var all = {
 
     // Should we populate the DB with sample data?
     seedDB: false,
+
+    tokenSecret: process.env.TOKEN_SECRET,
 
     // Secret for session, you will want to change this and make it an environment variable
     secrets: {
