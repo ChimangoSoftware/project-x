@@ -10,8 +10,6 @@ module.exports = function (app: express.Application, seneca: any) {
     jwt({ secret: new Buffer(config.tokenSecret, 'base64') }),
     (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-      console.log(req.user);
-
       var query = _.extend({ 'role': 'api' }, req.body);
       seneca.act(query, function (err, value) {
         if (err) {

@@ -1,7 +1,6 @@
 'use strict';
 
 import express = require('express');
-var bodyParser = require('body-parser');
 var http = require('http');
 
 // config
@@ -15,8 +14,6 @@ import sequelizeInstance = require('./config/sequelize-config');
 
 // server
 let app = express();
-app.use(bodyParser.json());
-let server = http.createServer(app);
 
 require('./config/express-config')(app);
 
@@ -43,6 +40,11 @@ require('./config/seneca-config')(app, seneca);
 
 // routes
 require('./routes')(app, seneca);
+
+// Error handlers
+require('./config/express-error-config')(app);
+
+let server = http.createServer(app);
 
 // Start server - express
 function startServer() {
