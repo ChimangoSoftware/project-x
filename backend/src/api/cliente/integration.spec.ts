@@ -6,7 +6,8 @@ import ClienteDao = require('./cliente.dao');
 declare let expect: Sinon.SinonExpectation;
 
 describe.only('Cliente API:', () => {
-    let clienteDao = new ClienteDao();
+    const sequelizeInstance: any = {};
+    let clienteDao = new ClienteDao(sequelizeInstance);
     let token: string;
     let aux_token: string;
 

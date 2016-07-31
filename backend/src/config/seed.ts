@@ -3,10 +3,18 @@
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
 
+
+console.log('-------------------------------');
+console.log('Sincronizando modelos...');
+console.log('-------------------------------');
+
 import squelizeInstance = require('./sequelize-config');
 
-var clienteSequalize = require('./../api/cliente/modelo.seq');
-clienteSequalize(squelizeInstance).sync();
+import {clienteSequalize} from './../api/cliente/cliente.model.seq';
+clienteSequalize(squelizeInstance).sync({force: true});
+
+import {userSequalize}  from './../api/user/user.model.seq';
+userSequalize(squelizeInstance).sync({force: true})
 
 
 /*

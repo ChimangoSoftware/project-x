@@ -3,8 +3,8 @@ declare let assert: Chai.Assert;
 declare let expect: Chai.ExpectStatic;
 
 describe('ClienteDao', () => {
-
-    let clienteDao = new ClienteDao();
+    const sequelizeInstance: any = {};
+    let clienteDao = new ClienteDao(sequelizeInstance);
     let testCliente: model.Cliente = {
         nombre: 'nombre',
         apellido: 'apellido',
@@ -38,12 +38,12 @@ describe('ClienteDao', () => {
         let createPromise = clienteDao.create(testCliente);
         createPromise.then((dbCliente) => {
             expect(dbCliente._id).not.to.be.null;
-            let findPromise = clienteDao.list();
-            findPromise.then((findedCliente) => {
-                expect(findedCliente.length).to.equal(1);
-                done();
-            });
-            findPromise.catch((err) => console.log('Error al buscar los cliente', err));
+            clienteDao.list()
+                .then((findedCliente) => {
+                    expect(findedCliente.length).to.equal(1);
+                    done();
+                })
+                .catch((err) => console.log('Error al buscar los cliente', err));
         });
         createPromise.catch((err) => console.log('Error al crear el cliente', err));
     });

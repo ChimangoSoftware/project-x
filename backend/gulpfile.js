@@ -33,6 +33,7 @@ const paths = {
  ********************/
 
 gulp.task('start', cb => {
+    // plugins.shell(['cd ../frontend && npm start']);
     runSequence(
         'clean:build',
         'typescript',

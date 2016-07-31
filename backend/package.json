@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "build/app.js",
   "scripts": {
-    "start": "gulp start",
+    "start": "rimraf build && concurrently --kill-others \"tsc --watch \" \"nodemon --debug --delay 4 build \" ",
     "start:prod": "cross-env NODE_ENV=production npm start",
     "test": "cross-env NODE_ENV=test npm run tsc && gulp test:server",
     "postinstall": "typings install"

@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prestart": "clear",
     "start": "cd backend && npm start",
     "clean": "cd backend && rimraf node_modules typings build",
     "install": "cd backend && npm install && cd ../frontend && npm install",
-    "installDevTools": "npm install -g gulp@3.9.0 typescript@1.8.10 typings@1.3.1 rimraf tslint@3.10.2"
+    "installDevTools": "npm install -g typescript@1.8.10 typings@1.3.1 rimraf tslint@3.10.2 concurrently"
   },
   "repository": {
     "type": "git",

@@ -1,21 +1,45 @@
 import sequelize = require('sequelize');
-import userSequelizeModel = require('./user.model.seq');
-import sequelizeInstance = require('../../config/sequelize-config');
+import Promise = require('bluebird');
+import {userSequalize, UserInstance} from './user.model.seq';
 
-export default class UserDao implements service.UserService {
+class UserDao implements service.UserService {
 
-    model: sequelize.Model<model.User, model.UserAttributes>;
+  public model: sequelize.Model<UserInstance, model.User>;
 
-    constructor() {
-        this.model = userSequelizeModel(sequelizeInstance);
-    }
+  constructor(sequelizeInstance: sequelize.Sequelize) {
+    this.model = userSequalize(sequelizeInstance);
+  }
 
-    find(filter: any, done: service.SimpleResponse<model.User>): void {
-        this.model.find(filter)
-            .then((user: model.User) => {
-                return done(null, user);
-            }).catch((err) => {
-                return done(err);
-            });
-    };
+  create(user: model.User): Promise<model.User> {
+    return new Promise<model.User>((resolve, reject) => {
+      this.model.create(user)
+        .then((dbUser) => resolve(dbUser.toJSON()))
+        .catch((error) => reject(error));
+    });
+  }
+
+  getRolesByExternalId(id: string): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+      this.model.findOne({ where: { externalId: id } })
+        .then((dbUser) => {
+          if (dbUser) {
+            resolve(dbUser.toJSON().roles)
+          } else {
+            resolve([])
+          }
+        })
+        .catch((error) => reject(error));
+    });
+  };
+
+  setRolesByExternalId(data: { id: string; roles: string[] }): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+      this.model.update({ roles: data.roles }, { where: { externalId: data.id } })
+        .then(dbUser => resolve(data.roles))
+        .catch(err => reject(err));
+    });
+  };
+
 }
+
+export = UserDao;

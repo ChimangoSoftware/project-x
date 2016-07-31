@@ -1,0 +1,3 @@
+{
+    "relativePath.ignore": ["**/node_modules/**","**/*.js", "**/*.js.map"]
+}

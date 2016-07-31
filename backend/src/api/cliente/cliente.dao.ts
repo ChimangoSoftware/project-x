@@ -1,13 +1,12 @@
 import sequelize = require('sequelize');
 import Promise = require('bluebird');
-import {clienteSequalize, ClienteModel, ClienteInstance} from './cliente.model.seq';
-import sequelizeInstance = require('../../config/sequelize-config');
+import {clienteSequalize, ClienteInstance} from './cliente.model.seq';
 
 class ClienteDao implements service.ClienteService {
 
     public model: sequelize.Model<ClienteInstance, model.Cliente>;
 
-    constructor() {
+    constructor(sequelizeInstance: sequelize.Sequelize) {
         this.model = clienteSequalize(sequelizeInstance);
     }
 

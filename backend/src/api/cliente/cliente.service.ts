@@ -1,8 +1,11 @@
 import Promise = require('bluebird');
 import ClienteDao = require('./cliente.dao');
-import SenecaService = require('../../seneca.service');
+import senecaService = require('../../routes/seneca.service');
+import permission = require('../../routes/permission');
 
-@SenecaService({ role: 'api', service: 'clienteService' })
+const serviceName = 'clienteService';
+
+@senecaService({ role: 'api', service: serviceName })
 class ClienteService implements service.ClienteService {
 
     static getClass(): any {
@@ -11,35 +14,25 @@ class ClienteService implements service.ClienteService {
 
     constructor(private dao: ClienteDao) { }
 
-    create(cliente: model.Cliente, done: service.SimpleResponse<model.Cliente>): void {
-        this.dao.create(cliente)
-            .then((dbCliente) => done(null, dbCliente))
-            .catch((err) => done(err));
+    create(cliente: model.Cliente): Promise<model.Cliente> {
+        return this.dao.create(cliente);
     }
 
-    list(done: service.SimpleResponse<model.Cliente[]>): Promise<model.Cliente[]> {
-        let promise = this.dao.list();
-        promise.then((dbClientes) => done(null, dbClientes));
-        promise.catch((err) => done(null));
-        return promise;
+    @permission.setEndpointPermission({ service: serviceName, roles: ['role1'] })
+    list(): Promise<model.Cliente[]> {
+        return this.dao.list();
     }
 
-    getById(id: number, done: service.SimpleResponse<model.Cliente>): void {
-        this.dao.getById(id)
-            .then((dbCliente) => done(null, dbCliente))
-            .catch((err) => done(null));
+    getById(id: number): Promise<model.Cliente> {
+        return this.dao.getById(id);
     }
 
-    update(cliente: model.Cliente, done: service.SimpleResponse<model.Cliente>): void {
-        this.dao.update(cliente)
-            .then((dbCliente) => done(null, dbCliente))
-            .catch((err) => done(null));
+    update(cliente: model.Cliente): Promise<model.Cliente> {
+        return this.dao.update(cliente);
     }
 
-    delete(id: number, done: service.SimpleResponse<service.DeleteResponse>): void {
-        this.dao.delete(id)
-            .then((dbCliente) => done(null, dbCliente))
-            .catch((err) => done(null))
+    delete(id: number): Promise<service.DeleteResponse> {
+        return this.dao.delete(id);
     }
 
 }

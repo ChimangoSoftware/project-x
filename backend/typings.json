@@ -12,7 +12,7 @@
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#6766ed1d0faf02ede9e2edf2e66bbb2388c825ec",
     "validator": "github:DefinitelyTyped/DefinitelyTyped/validator/validator.d.ts#f4b1797c1201b6c575668f5d7ea12d9b1ab21846",
     "bluebird": "github:DefinitelyTyped/DefinitelyTyped/bluebird/bluebird.d.ts#f4b1797c1201b6c575668f5d7ea12d9b1ab21846",
-    "sequelize": "github:DefinitelyTyped/DefinitelyTyped/sequelize/sequelize.d.ts#f4b1797c1201b6c575668f5d7ea12d9b1ab21846",
+    "sequelize": "github:DefinitelyTyped/DefinitelyTyped/sequelize/sequelize.d.ts#5cf143550949bc2c60f806baee32501a0acb7c5a",
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#f4b1797c1201b6c575668f5d7ea12d9b1ab21846",
     "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#6766ed1d0faf02ede9e2edf2e66bbb2388c825ec",
     "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#6766ed1d0faf02ede9e2edf2e66bbb2388c825ec",

@@ -30,28 +30,33 @@ describe('ClienteService', () => {
     let clienteService = new ClienteService(clienteDao);
 
     it('should call create funtion from clienteDao when create function is invoked', () => {
-        clienteService.create(clienteInstance, sinon.stub());
-        assert(clienteDao.create.calledOnce);
+        clienteService.create(clienteInstance).then(() => {
+            assert(clienteDao.create.calledOnce);
+        });
     });
 
     it('should call list funtion from clienteDao when list function is invoked', () => {
-        clienteService.list(sinon.stub());
-        assert(clienteDao.list.calledOnce);
+        clienteService.list().then(() => {
+            assert(clienteDao.list.calledOnce);
+        });
     });
 
     it('should call getById funtion from clienteDao when getById function is invoked', () => {
-        clienteService.getById(clienteDao._id, sinon.stub());
-        assert(clienteDao.getById.withArgs(clienteDao._id).calledOnce);
+        clienteService.getById(clienteDao._id).then(() => {
+            assert(clienteDao.getById.withArgs(clienteDao._id).calledOnce);
+        })
     });
 
     it('should call update funtion from clienteDao when update function is invoked', () => {
-        clienteService.update(clienteDao, sinon.stub());
-        assert(clienteDao.update.withArgs(clienteDao).calledOnce);
+        clienteService.update(clienteDao).then(() => {
+            assert(clienteDao.update.withArgs(clienteDao).calledOnce);
+        })
     });
 
     it('should call delete funtion from clienteDao when delete function is invoked', () => {
-        clienteService.delete(clienteDao._id, sinon.stub());
-        assert(clienteDao.delete.withArgs(clienteDao._id).calledOnce);
+        clienteService.delete(clienteDao._id).then(() => {
+            assert(clienteDao.delete.withArgs(clienteDao._id).calledOnce);
+        });
     });
 
 });

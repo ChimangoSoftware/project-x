@@ -133,14 +133,16 @@ app.post('/api', ensureLoggedIn, (req, res) => {
   callApi(options);
 });
 
-app.get('*',
-  ensureLoggedIn,
-  (req, res) => {
+app.get('*', ensureLoggedIn, (req, res) => {
 
   const location = req.url;
   const memoryHistory = createMemoryHistory(req.originalUrl);
   const store = configureStore(memoryHistory);
   const history = syncHistoryWithStore(memoryHistory, store);
+
+  console.log(req.user.token);
+  console.log(req.user.token);
+
 
   match({ history, routes, location },
     (error, redirectLocation, renderProps) => {

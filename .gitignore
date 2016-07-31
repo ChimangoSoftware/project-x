@@ -4,7 +4,6 @@ npm-debug.log
 /backend/build
 /backend/config/local.env.js
 /backend/typings/*
-!backend/typings/local.d.ts
 
 # dotenv
 .env
