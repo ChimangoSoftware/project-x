@@ -4,23 +4,23 @@ import {clienteSequalize, ClienteInstance} from './cliente.model.seq';
 
 class ClienteDao implements service.ClienteService {
 
-    public model: sequelize.Model<ClienteInstance, model.Cliente>;
+    public seqModel: sequelize.Model<ClienteInstance, model.Cliente>;
 
     constructor(sequelizeInstance: sequelize.Sequelize) {
-        this.model = clienteSequalize(sequelizeInstance);
+        this.seqModel = clienteSequalize(sequelizeInstance);
     }
 
     create(cliente: model.Cliente): Promise<model.Cliente> {
         return new Promise<model.Cliente>((resolve, reject) => {
-            this.model.create(cliente)
+            this.seqModel.create(cliente)
                 .then((dbCliente) => resolve(dbCliente.toJSON()))
-                .catch((error) => reject(error));
+                .catch(error => reject(error));
         });
     }
 
     list(): Promise<model.Cliente[]> {
         return new Promise<model.Cliente[]>((resolve, reject) => {
-            this.model.findAll()
+            this.seqModel.findAll()
                 .then((clientes: model.Cliente[]) => resolve(clientes))
                 .catch((err) => reject(err));
         });
@@ -28,7 +28,7 @@ class ClienteDao implements service.ClienteService {
 
     getById(id: number): Promise<model.Cliente> {
         return new Promise<model.Cliente>((resolve, reject) => {
-            this.model.findById(id)
+            this.seqModel.findById(id)
                 .then((cliente) => resolve(cliente.toJSON()))
                 .catch((err) => reject(err));
 
@@ -37,7 +37,7 @@ class ClienteDao implements service.ClienteService {
 
     update(cliente: model.Cliente): Promise<model.Cliente> {
         return new Promise<model.Cliente>((resolve, reject) => {
-            this.model.update(cliente, { where: { _id: cliente._id }, returning: true })
+            this.seqModel.update(cliente, { where: { _id: cliente._id }, returning: true })
                 .then((response) => resolve(response[1][0].toJSON()))
                 .catch((err) => reject(err));
         })
@@ -45,7 +45,7 @@ class ClienteDao implements service.ClienteService {
 
     delete(id: number): Promise<service.DeleteResponse> {
         return new Promise<service.DeleteResponse>((resolve, reject) => {
-            this.model.destroy({ where: { _id: id } })
+            this.seqModel.destroy({ where: { _id: id } })
                 .then((updatedCliente) => resolve({ result: true }))
                 .catch((err) => reject(err));
 

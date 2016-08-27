@@ -8,7 +8,7 @@ console.log('-------------------------------');
 console.log('Sincronizando modelos...');
 console.log('-------------------------------');
 
-import squelizeInstance = require('./sequelize-config');
+import squelizeInstance = require('./seq-own-config');
 
 import {clienteSequalize} from './../api/cliente/cliente.model.seq';
 clienteSequalize(squelizeInstance).sync({force: true});

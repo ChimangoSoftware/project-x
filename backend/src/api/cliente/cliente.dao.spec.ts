@@ -14,13 +14,13 @@ describe('ClienteDao', () => {
     };
 
     before((done) => {
-        clienteDao.model.sync()
+        clienteDao.seqModel.sync()
             .then(() => done())
             .catch((err) => console.log('Error al intentar sincronizar tabla Cliente', err));
     });
 
     beforeEach((done) => {
-        clienteDao.model.destroy({ where: {} })
+        clienteDao.seqModel.destroy({ where: {} })
             .then(() => done())
             .catch((err) => console.log('Error al intentar vaciar la tabla Cliente', err));
     });

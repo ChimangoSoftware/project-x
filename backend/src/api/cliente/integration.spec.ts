@@ -12,7 +12,7 @@ describe.only('Cliente API:', () => {
     let aux_token: string;
 
     before((done) => {
-        clienteDao.model.sync()
+        clienteDao.seqModel.sync()
             .then(() => done())
             .catch((err) => console.log('Error al intentar sincronizar tabla Cliente', err));
     });
@@ -34,7 +34,7 @@ describe.only('Cliente API:', () => {
     });*/
 
     beforeEach((done) => {
-        return clienteDao.model.destroy({ where: {} })
+        return clienteDao.seqModel.destroy({ where: {} })
             .then(() => done())
             .catch((err) => console.log('Error al intentar vaciar la tabla Cliente', err));
     });

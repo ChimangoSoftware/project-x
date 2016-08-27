@@ -1,13 +1,14 @@
-import sequelizeInstance = require('../config/sequelize-config');
+import sequelizeInstance = require('../config/seq-own-config');
 
 import ClienteService = require('./cliente/cliente.service');
 import ClienteDao = require('./cliente/cliente.dao');
+const clienteDao = new ClienteDao(sequelizeInstance);
+export const clienteService = new ClienteService(clienteDao);
+
+import MorosidadService = require('./morosidad/morosidad.service');
+export const morosidadService = new MorosidadService();
 
 import UserService = require('./user/user.service');
 import UserDao = require('./user/user.dao');
-
-let servicesInstances = {};
-servicesInstances[ClienteService.getClass()] = new ClienteDao(sequelizeInstance);
-servicesInstances[UserService.getClass()] = new UserDao(sequelizeInstance);
-
-module.exports = servicesInstances;
+const userDao = new UserDao(sequelizeInstance);
+export const userService = new UserService(userDao);

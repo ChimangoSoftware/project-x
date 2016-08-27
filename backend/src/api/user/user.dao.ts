@@ -4,15 +4,15 @@ import {userSequalize, UserInstance} from './user.model.seq';
 
 class UserDao implements service.UserService {
 
-  public model: sequelize.Model<UserInstance, model.User>;
+  public seqModel: sequelize.Model<UserInstance, model.User>;
 
   constructor(sequelizeInstance: sequelize.Sequelize) {
-    this.model = userSequalize(sequelizeInstance);
+    this.seqModel = userSequalize(sequelizeInstance);
   }
 
   create(user: model.User): Promise<model.User> {
     return new Promise<model.User>((resolve, reject) => {
-      this.model.create(user)
+      this.seqModel.create(user)
         .then((dbUser) => resolve(dbUser.toJSON()))
         .catch((error) => reject(error));
     });
@@ -20,7 +20,7 @@ class UserDao implements service.UserService {
 
   getRolesByExternalId(id: string): Promise<string[]> {
     return new Promise<string[]>((resolve, reject) => {
-      this.model.findOne({ where: { externalId: id } })
+      this.seqModel.findOne({ where: { externalId: id } })
         .then((dbUser) => {
           if (dbUser) {
             resolve(dbUser.toJSON().roles)
@@ -34,7 +34,7 @@ class UserDao implements service.UserService {
 
   setRolesByExternalId(data: { id: string; roles: string[] }): Promise<string[]> {
     return new Promise<string[]>((resolve, reject) => {
-      this.model.update({ roles: data.roles }, { where: { externalId: data.id } })
+      this.seqModel.update({ roles: data.roles }, { where: { externalId: data.id } })
         .then(dbUser => resolve(data.roles))
         .catch(err => reject(err));
     });

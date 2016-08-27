@@ -2,7 +2,7 @@ import express = require('express');
 import _ = require('lodash');
 
 import permission = require('./permission')
-import servicesInstances = require('./../api/servicesInstances');
+import {userService} from './../api/servicesInstances';
 import UserService = require('./../api/user/user.service');
 
 const jwt = require('express-jwt');
@@ -32,8 +32,6 @@ module.exports = function (app: express.Application, seneca: any) {
   };
 
   const checkPermission = function (req: express.Request, res: express.Response, next: express.NextFunction) {
-    const userService: service.UserService = servicesInstances[UserService.getClass()];
-
     userService.getRolesByExternalId(req.user.sub)
       .then((roles: string[]) => {
         const result = permission.getEndpointPermission(req.body.service, req.body.operation, roles);

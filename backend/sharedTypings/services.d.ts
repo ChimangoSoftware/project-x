@@ -6,7 +6,11 @@ declare namespace service {
 
   interface apiService { }
 
-  interface ClienteService extends service.apiService {
+  interface MorosidadService {
+    getByNroDocumento(nroDocumento: number): Promise<model.Persona>;
+  }
+
+  interface ClienteService {
     create(cliente: model.Cliente): Promise<model.Cliente>;
     list(): Promise<model.Cliente[]>;
     getById(id: number): Promise<model.Cliente>;
@@ -14,7 +18,7 @@ declare namespace service {
     delete(id: number): Promise<service.DeleteResponse>;
   }
 
-  interface UserService extends service.apiService {
+  interface UserService {
     create(user: model.User): Promise<model.User>;
     getRolesByExternalId(id: string): Promise<string[]>;
     setRolesByExternalId(data: { id: string; roles: string[] }): Promise<string[]>;
